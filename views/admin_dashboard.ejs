@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Skill Swap Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      --warning-gradient: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+      --error-gradient: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      --primary-color: #667eea;
+      --accent-color: #4facfe;
+      --success-color: #11998e;
+      --warning-color: #f39c12;
+      --error-color: #e74c3c;
+      --text-primary: #2c3e50;
+      --text-secondary: #7f8c8d;
+      --text-light: #ecf0f1;
+      --text-white: #ffffff;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-dark: #2c3e50;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-base: 1rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.5rem;
+      --font-size-2xl: 2rem;
+      --font-size-3xl: 3rem;
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --transition-base: 250ms cubic-bezier(.4,0,.2,1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-primary);
+      box-shadow: var(--shadow-md);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-lg) 0;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
+
+    .logo {
+      font-size: var(--font-size-2xl);
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-decoration: none;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 2px solid transparent;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      transition: all var(--transition-base);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--primary-gradient);
+      transition: left var(--transition-base);
+      z-index: -1;
+    }
+
+    .nav-btn:hover::before,
+    .nav-btn.active::before {
+      left: 0;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      color: var(--text-white);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-top: 80px;
+      min-height: calc(100vh - 80px);
+      padding: var(--space-2xl) 0;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .stat-card {
+      background: var(--bg-primary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+      text-align: center;
+      transition: all var(--transition-base);
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .stat-icon {
+      font-size: 3rem;
+      margin-bottom: var(--space-md);
+    }
+
+    .stat-number {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      margin-bottom: var(--space-sm);
+      color: var(--text-primary);
+    }
+
+    .stat-label {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2xl);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .content-card {
+      background: var(--bg-primary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .card-title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      margin-bottom: var(--space-lg);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .activity-list {
+      list-style: none;
+    }
+
+    .activity-item {
+      padding: var(--space-md);
+      border-bottom: 1px solid var(--bg-secondary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-info {
+      flex: 1;
+    }
+
+    .activity-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .activity-details {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .activity-time {
+      font-size: var(--font-size-xs);
+      color: var(--text-secondary);
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-lg);
+      margin-top: var(--space-2xl);
+    }
+
+    .action-btn {
+      background: var(--primary-gradient);
+      color: var(--text-white);
+      padding: var(--space-lg);
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      text-align: center;
+      font-weight: 600;
+      transition: all var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .action-btn:hover {
+      background: var(--accent-gradient);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .action-icon {
+      font-size: 2rem;
+    }
+
+    /* Status badges */
+    .status-badge {
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-pending {
+      background: rgba(243, 156, 18, 0.1);
+      color: var(--warning-color);
+    }
+
+    .status-accepted {
+      background: rgba(17, 153, 142, 0.1);
+      color: var(--success-color);
+    }
+
+    .status-banned {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--error-color);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      transition: all var(--transition-base);
+    }
+
+    .theme-toggle:hover {
+      background: var(--primary-color);
+      color: var(--text-white);
+      transform: translateY(-1px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="/admin" class="logo">Admin Panel</a>
+      <nav class="nav-menu">
+        <button class="theme-toggle" onclick="toggleTheme()">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <a href="/admin" class="nav-btn active">Dashboard</a>
+        <a href="/admin/users" class="nav-btn">Users</a>
+        <a href="/admin/requests" class="nav-btn">Requests</a>
+        <a href="/admin/notifications" class="nav-btn">Notifications</a>
+        <a href="/admin/analytics" class="nav-btn">Analytics</a>
+        <a href="/" class="nav-btn">Back to Site</a>
+        <a href="/logout" class="nav-btn">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <h1 class="page-title">Admin Dashboard</h1>
+      
+      <!-- Statistics Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-number"><%= totalUsers %></div>
+          <div class="stat-label">Total Users</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-number"><%= activeUsers %></div>
+          <div class="stat-label">Active Users</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">🚫</div>
+          <div class="stat-number"><%= bannedUsers %></div>
+          <div class="stat-label">Banned Users</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">🤝</div>
+          <div class="stat-number"><%= totalRequests %></div>
+          <div class="stat-label">Total Requests</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-number"><%= pendingRequests %></div>
+          <div class="stat-label">Pending Requests</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-number"><%= acceptedRequests %></div>
+          <div class="stat-label">Accepted Requests</div>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="content-grid">
+        <!-- Recent Users -->
+        <div class="content-card">
+          <h2 class="card-title">
+            <span>👤</span>
+            Recent Users
+          </h2>
+          <ul class="activity-list">
+            <% recentUsers.forEach(user => { %>
+              <li class="activity-item">
+                <div class="activity-info">
+                  <div class="activity-name"><%= user.name || 'Anonymous' %></div>
+                  <div class="activity-details"><%= user.email %></div>
+                </div>
+                <div class="activity-time">
+                  <%= new Date(user.createdAt).toLocaleDateString() %>
+                </div>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+
+        <!-- Recent Requests -->
+        <div class="content-card">
+          <h2 class="card-title">
+            <span>🤝</span>
+            Recent Swap Requests
+          </h2>
+          <ul class="activity-list">
+            <% recentRequests.forEach(request => { %>
+              <li class="activity-item">
+                <div class="activity-info">
+                  <div class="activity-name">
+                    <%= request.fromUserId.name %> → <%= request.toUserId.name %>
+                  </div>
+                  <div class="activity-details">
+                    <%= request.skillsOffered.join(', ') %> for <%= request.skillsWanted.join(', ') %>
+                  </div>
+                </div>
+                <div class="activity-time">
+                  <span class="status-badge status-<%= request.status %>">
+                    <%= request.status %>
+                  </span>
+                </div>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <a href="/admin/users" class="action-btn">
+          <div class="action-icon">👥</div>
+          <div>Manage Users</div>
+        </a>
+        
+        <a href="/admin/requests" class="action-btn">
+          <div class="action-icon">🤝</div>
+          <div>View Requests</div>
+        </a>
+        
+        <a href="/admin/notifications" class="action-btn">
+          <div class="action-icon">📢</div>
+          <div>Send Alerts</div>
+        </a>
+        
+        <a href="/admin/analytics" class="action-btn">
+          <div class="action-icon">📊</div>
+          <div>Analytics</div>
+        </a>
+        
+        <a href="/admin/download/users" class="action-btn">
+          <div class="action-icon">📥</div>
+          <div>Download Users</div>
+        </a>
+        
+        <a href="/admin/download/requests" class="action-btn">
+          <div class="action-icon">📄</div>
+          <div>Download Requests</div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html> 

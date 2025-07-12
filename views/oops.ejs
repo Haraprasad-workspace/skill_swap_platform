@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SkillSwap - Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Oops! - Skill Swap Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -39,6 +39,7 @@
       --font-size-lg: 1.125rem;
       --font-size-xl: 1.5rem;
       --font-size-2xl: 2rem;
+      --font-size-3xl: 3rem;
       --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
       --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
       --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
@@ -46,148 +47,131 @@
       --radius-xl: 1rem;
       --radius-full: 9999px;
       --transition-base: 250ms cubic-bezier(.4,0,.2,1);
-      --transition-fast: 150ms cubic-bezier(.4,0,.2,1);
     }
-    
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      min-height: 100vh;
       font-family: var(--font-family);
       background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
       color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      transition: background 0.5s;
     }
+
     .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    .error-card {
       background: var(--bg-primary);
       border-radius: var(--radius-xl);
+      padding: var(--space-3xl);
       box-shadow: var(--shadow-xl);
-      padding: var(--space-2xl);
-      max-width: 400px;
-      width: 95vw;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: fadeInUp 0.7s cubic-bezier(.4,0,.2,1);
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .header {
+      border: 1px solid rgba(102, 126, 234, 0.1);
       text-align: center;
-      margin-bottom: var(--space-lg);
+      animation: fadeInUp 0.8s ease-out;
     }
-    .header h1 {
-      font-size: var(--font-size-xl);
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .error-icon {
+      font-size: 6rem;
+      margin-bottom: var(--space-lg);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .error-title {
+      font-size: var(--font-size-2xl);
       font-weight: 700;
-      background: var(--primary-gradient);
+      margin-bottom: var(--space-lg);
+      background: var(--error-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: var(--space-xs);
-      letter-spacing: 1px;
-      transition: color var(--transition-base);
     }
-    .motivation {
-      text-align: center;
-      font-size: var(--font-size-sm);
-      color: var(--text-secondary);
-      margin-bottom: var(--space-lg);
-      font-style: italic;
-      opacity: 0.85;
-    }
+
     .error-message {
-      background: #fee;
-      color: var(--error-color);
-      padding: var(--space-md);
-      border-radius: var(--radius-lg);
-      margin-bottom: var(--space-md);
-      border: 1px solid #fcc;
-      font-size: var(--font-size-sm);
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-2xl);
+      line-height: 1.6;
     }
-    
-    form {
-      width: 100%;
+
+    .error-actions {
       display: flex;
-      flex-direction: column;
       gap: var(--space-md);
+      justify-content: center;
+      flex-wrap: wrap;
     }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-xs);
-      margin-bottom: var(--space-md);
-    }
-    .form-group label {
-      font-size: var(--font-size-sm);
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: var(--space-xs);
-    }
-    .form-group input {
-      padding: var(--space-md);
-      border: 2px solid rgba(102, 126, 234, 0.15);
-      border-radius: var(--radius-lg);
+
+    .btn {
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-full);
       font-size: var(--font-size-base);
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      transition: border var(--transition-base), box-shadow var(--transition-base);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: all var(--transition-base);
+      border: none;
+      cursor: pointer;
+      min-width: 120px;
     }
-    .form-group input:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
-      outline: none;
-    }
-    .submit {
+
+    .btn-primary {
       background: var(--primary-gradient);
       color: var(--text-white);
-      padding: var(--space-md);
-      font-size: var(--font-size-base);
-      font-weight: 700;
-      border: none;
-      border-radius: var(--radius-lg);
-      cursor: pointer;
-      box-shadow: var(--shadow-md);
-      margin-top: var(--space-sm);
-      transition: background var(--transition-base), transform var(--transition-base);
-      letter-spacing: 0.5px;
     }
-    .submit:hover {
+
+    .btn-primary:hover {
       background: var(--accent-gradient);
-      transform: translateY(-2px) scale(1.03);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
     }
-    .link-msg {
-      text-align: center;
-      margin-top: var(--space-lg);
-      font-size: var(--font-size-sm);
-      color: var(--text-secondary);
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 2px solid var(--primary-color);
     }
-    .link-msg a {
-      color: var(--primary-color);
-      text-decoration: none;
-      font-weight: 600;
-      transition: color var(--transition-base);
+
+    .btn-secondary:hover {
+      background: var(--primary-color);
+      color: var(--text-white);
+      transform: translateY(-2px);
     }
-    .link-msg a:hover {
-      color: var(--accent-color);
-      text-decoration: underline;
-    }
-    @media (max-width: 600px) {
-      .container {
-        padding: var(--space-lg) var(--space-md);
-      }
-    }
-    button:focus-visible, input:focus-visible {
-      outline: 2px solid var(--primary-color);
-      outline-offset: 2px;
-    }
-    
+
     /* Header Navigation */
     .header-nav {
       position: absolute;
@@ -197,7 +181,7 @@
       gap: var(--space-md);
       align-items: center;
     }
-    
+
     .home-btn {
       background: var(--primary-gradient);
       color: var(--text-white);
@@ -209,13 +193,13 @@
       transition: all var(--transition-base);
       box-shadow: var(--shadow-md);
     }
-    
+
     .home-btn:hover {
       background: var(--accent-gradient);
       transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
-    
+
     .theme-toggle {
       background: transparent;
       border: 2px solid var(--primary-color);
@@ -226,11 +210,31 @@
       font-size: var(--font-size-sm);
       transition: all var(--transition-base);
     }
-    
+
     .theme-toggle:hover {
       background: var(--primary-color);
       color: var(--text-white);
       transform: translateY(-1px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .error-card {
+        padding: var(--space-2xl);
+      }
+      
+      .error-icon {
+        font-size: 4rem;
+      }
+      
+      .error-title {
+        font-size: var(--font-size-xl);
+      }
+      
+      .error-actions {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
@@ -245,35 +249,16 @@
 
   <!-- Main Content -->
   <div class="container">
-    <div class="header">
-      <h1>SkillSwap</h1>
-    </div>
-    <p class="motivation">
-      Unlock your potential. Swap skills. Grow together.
-    </p>
-    
-    <% if (typeof error !== 'undefined' && error) { %>
-      <div class="error-message">
-        <%= error %>
+    <div class="error-card">
+      <div class="error-icon">😅</div>
+      <h1 class="error-title">Oops! Something went wrong</h1>
+      <p class="error-message">
+        <%= typeof message !== 'undefined' ? message : 'We encountered an unexpected error. Please try again.' %>
+      </p>
+      <div class="error-actions">
+        <a href="/" class="btn btn-primary">Go Home</a>
+        <button onclick="history.back()" class="btn btn-secondary">Go Back</button>
       </div>
-    <% } %>
-    
-    <form action="/login" method="POST" novalidate>
-      <input type="hidden" name="redirectUrl" value="<%= typeof redirectUrl !== 'undefined' ? redirectUrl : '/' %>">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="example@email.com" required autocomplete="email" aria-describedby="email-help" />
-        <small id="email-help" class="sr-only">Enter your registered email address</small>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" aria-describedby="password-help" />
-        <small id="password-help" class="sr-only">Enter your account password</small>
-      </div>
-      <button type="submit" class="submit">Login</button>
-    </form>
-    <div class="link-msg">
-      Don't have an account? <a href="/register<%= typeof redirectUrl !== 'undefined' ? '?redirect=' + redirectUrl : '' %>">Sign up</a>
     </div>
   </div>
 

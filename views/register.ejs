@@ -1,11 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillSwap - Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      --warning-gradient: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+      --error-gradient: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      --primary-color: #667eea;
+      --accent-color: #4facfe;
+      --success-color: #11998e;
+      --warning-color: #f39c12;
+      --error-color: #e74c3c;
+      --text-primary: #2c3e50;
+      --text-secondary: #7f8c8d;
+      --text-light: #ecf0f1;
+      --text-white: #ffffff;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-dark: #2c3e50;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-base: 1rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.5rem;
+      --font-size-2xl: 2rem;
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --transition-base: 250ms cubic-bezier(.4,0,.2,1);
+      --transition-fast: 150ms cubic-bezier(.4,0,.2,1);
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: background 0.5s;
+    }
+    .container {
+      background: var(--bg-primary);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      padding: var(--space-2xl);
+      max-width: 500px;
+      width: 95vw;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeInUp 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+      color: var(--text-primary);
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.5px;
+    }
+    form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+      margin-bottom: var(--space-md);
+    }
+    label {
+      display: block;
+      margin-bottom: var(--space-xs);
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: var(--font-size-sm);
+    }
+    input, select {
+      width: 100%;
+      padding: var(--space-md);
+      font-size: var(--font-size-base);
+      border-radius: var(--radius-lg);
+      border: 2px solid rgba(102, 126, 234, 0.15);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      transition: border var(--transition-base), box-shadow var(--transition-base);
+      font-family: var(--font-family);
+    }
+    input:focus, select:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+      outline: none;
+    }
+    input::placeholder {
+      color: var(--text-secondary);
+    }
+    .submit {
+      background: var(--success-gradient);
+      color: var(--text-white);
+      padding: var(--space-md);
+      width: 100%;
+      font-size: var(--font-size-base);
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      margin-top: var(--space-sm);
+      box-shadow: var(--shadow-md);
+      transition: background var(--transition-base), transform var(--transition-base);
+      letter-spacing: 0.5px;
+    }
+    .submit:hover {
+      background: var(--accent-gradient);
+      transform: translateY(-2px) scale(1.03);
+    }
+    .link-msg {
+      text-align: center;
+      margin-top: var(--space-xl);
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+    .link-msg a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--transition-base);
+    }
+    .link-msg a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+    .strength {
+      height: 8px;
+      border-radius: var(--radius-full);
+      margin-top: var(--space-xs);
+      background-color: var(--bg-secondary);
+      overflow: hidden;
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+    .strength-bar {
+      height: 100%;
+      border-radius: var(--radius-full);
+      width: 0%;
+      background: var(--error-gradient);
+      transition: width var(--transition-fast), background var(--transition-fast);
+    }
+    .strength-bar.weak {
+      background: var(--error-gradient);
+    }
+    .strength-bar.fair {
+      background: var(--warning-gradient);
+    }
+    .strength-bar.good {
+      background: var(--accent-gradient);
+    }
+    .strength-bar.strong {
+      background: var(--success-gradient);
+    }
+    .strength-label {
+      font-size: var(--font-size-xs);
+      color: var(--text-secondary);
+      margin-top: var(--space-xs);
+      font-weight: 500;
+    }
+    .password-requirements {
+      background: var(--bg-secondary);
+      padding: var(--space-md);
+      border-radius: var(--radius-lg);
+      margin-top: var(--space-sm);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+    .requirement {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-size: var(--font-size-xs);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-xs);
+    }
+    .requirement:last-child {
+      margin-bottom: 0;
+    }
+    .requirement.met {
+      color: var(--success-color);
+    }
+    .requirement-icon {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--text-secondary);
+      transition: background var(--transition-fast);
+    }
+    .requirement.met .requirement-icon {
+      background: var(--success-color);
+    }
+    @media (max-width: 600px) {
+      .container {
+        padding: var(--space-xl) var(--space-lg);
+      }
+    }
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+    
+    /* Header Navigation */
+    .header-nav {
+      position: absolute;
+      top: var(--space-lg);
+      right: var(--space-lg);
+      display: flex;
+      gap: var(--space-md);
+      align-items: center;
+    }
+    
+    .home-btn {
+      background: var(--primary-gradient);
+      color: var(--text-white);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      transition: all var(--transition-base);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .home-btn:hover {
+      background: var(--accent-gradient);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      transition: all var(--transition-base);
+    }
+    
+    .theme-toggle:hover {
+      background: var(--primary-color);
+      color: var(--text-white);
+      transform: translateY(-1px);
+    }
+    
+    .error-message {
+      background: #fee;
+      color: var(--error-color);
+      padding: var(--space-md);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--space-md);
+      border: 1px solid #fcc;
+      font-size: var(--font-size-sm);
+    }
+  </style>
 </head>
 <body>
+  <!-- Header Navigation -->
+  <div class="header-nav">
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <span id="theme-icon">🌙</span>
+    </button>
+    <a href="/" class="home-btn">Home</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h2>Create Your Account</h2>
     
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="error-message">
+        <%= error %>
+      </div>
+    <% } %>
+    
+    <form action="/register" method="POST" novalidate>
+      <input type="hidden" name="redirectUrl" value="<%= typeof redirectUrl !== 'undefined' ? redirectUrl : '/' %>">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required placeholder="Enter your full name" autocomplete="name" aria-describedby="name-help" />
+        <small id="name-help" class="sr-only">Enter your full name</small>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" required placeholder="Enter your email" autocomplete="email" aria-describedby="email-help" />
+        <small id="email-help" class="sr-only">Enter a valid email address for your account</small>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required placeholder="Choose a password" autocomplete="new-password" aria-describedby="password-help" />
+        <div class="strength">
+          <div id="strengthBar" class="strength-bar"></div>
+        </div>
+        <div id="strengthLabel" class="strength-label"></div>
+        <div class="password-requirements" id="passwordRequirements">
+          <div class="requirement" id="req-length">
+            <div class="requirement-icon"></div>
+            <span>At least 6 characters</span>
+          </div>
+          <div class="requirement" id="req-letter">
+            <div class="requirement-icon"></div>
+            <span>Contains letters</span>
+          </div>
+          <div class="requirement" id="req-number">
+            <div class="requirement-icon"></div>
+            <span>Contains numbers</span>
+          </div>
+          <div class="requirement" id="req-length-8">
+            <div class="requirement-icon"></div>
+            <span>At least 8 characters (recommended)</span>
+          </div>
+        </div>
+        <small id="password-help" class="sr-only">Create a strong password with letters, numbers, and at least 6 characters</small>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm">Confirm Password</label>
+        <input type="password" id="confirm" required placeholder="Re-enter your password" autocomplete="new-password" aria-describedby="confirm-help" />
+        <small id="confirm-help" class="sr-only">Re-enter your password to confirm</small>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location (Optional)</label>
+        <input type="text" id="location" name="location" placeholder="Enter your city or location" />
+      </div>
+
+      <div class="form-group">
+        <label for="availability">Availability</label>
+        <select id="availability" name="availability" required>
+          <option value="">Select availability</option>
+          <option value="weekend">Weekend</option>
+          <option value="weekday">Weekday</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="skillsOffered">Skills I Can Teach (Optional)</label>
+        <select id="skillsOffered" name="skillsOffered[]" multiple>
+          <option value="JavaScript">JavaScript</option>
+          <option value="Python">Python</option>
+          <option value="React">React</option>
+          <option value="Node.js">Node.js</option>
+          <option value="HTML/CSS">HTML/CSS</option>
+          <option value="Java">Java</option>
+          <option value="C++">C++</option>
+          <option value="PHP">PHP</option>
+          <option value="Ruby">Ruby</option>
+          <option value="Other">Other</option>
+        </select>
+        <small>Hold Ctrl (or Cmd on Mac) to select multiple skills</small>
+      </div>
+
+      <div class="form-group">
+        <label for="skillsWanted">Skills I Want to Learn (Optional)</label>
+        <select id="skillsWanted" name="skillsWanted[]" multiple>
+          <option value="JavaScript">JavaScript</option>
+          <option value="Python">Python</option>
+          <option value="React">React</option>
+          <option value="Node.js">Node.js</option>
+          <option value="HTML/CSS">HTML/CSS</option>
+          <option value="Java">Java</option>
+          <option value="C++">C++</option>
+          <option value="PHP">PHP</option>
+          <option value="Ruby">Ruby</option>
+          <option value="Other">Other</option>
+        </select>
+        <small>Hold Ctrl (or Cmd on Mac) to select multiple skills</small>
+      </div>
+
+      <button class="submit" type="submit">Create Account</button>
+    </form>
+
+    <div class="link-msg">
+      Already have an account? <a href="/login<%= typeof redirectUrl !== 'undefined' ? '?redirect=' + redirectUrl : '' %>">Sign in</a>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Password strength checker
+    document.getElementById('password').addEventListener('input', function() {
+      const password = this.value;
+      const strengthBar = document.getElementById('strengthBar');
+      const strengthLabel = document.getElementById('strengthLabel');
+      
+      let strength = 0;
+      let label = '';
+      
+      if (password.length >= 6) strength++;
+      if (password.match(/[a-zA-Z]/)) strength++;
+      if (password.match(/[0-9]/)) strength++;
+      if (password.length >= 8) strength++;
+      
+      switch(strength) {
+        case 0:
+        case 1:
+          strengthBar.style.width = '25%';
+          strengthBar.className = 'strength-bar weak';
+          label = 'Weak';
+          break;
+        case 2:
+          strengthBar.style.width = '50%';
+          strengthBar.className = 'strength-bar fair';
+          label = 'Fair';
+          break;
+        case 3:
+          strengthBar.style.width = '75%';
+          strengthBar.className = 'strength-bar good';
+          label = 'Good';
+          break;
+        case 4:
+          strengthBar.style.width = '100%';
+          strengthBar.className = 'strength-bar strong';
+          label = 'Strong';
+          break;
+      }
+      
+      strengthLabel.textContent = label;
+      
+      // Update requirements
+      document.getElementById('req-length').className = password.length >= 6 ? 'requirement met' : 'requirement';
+      document.getElementById('req-letter').className = password.match(/[a-zA-Z]/) ? 'requirement met' : 'requirement';
+      document.getElementById('req-number').className = password.match(/[0-9]/) ? 'requirement met' : 'requirement';
+      document.getElementById('req-length-8').className = password.length >= 8 ? 'requirement met' : 'requirement';
+    });
+
+    // Password confirmation
+    document.getElementById('confirm').addEventListener('input', function() {
+      const password = document.getElementById('password').value;
+      const confirm = this.value;
+      
+      if (confirm && password !== confirm) {
+        this.setCustomValidity('Passwords do not match');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+  </script>
 </body>
 </html>

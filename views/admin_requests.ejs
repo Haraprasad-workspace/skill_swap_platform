@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Management - Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      --warning-gradient: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+      --error-gradient: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      --primary-color: #667eea;
+      --accent-color: #4facfe;
+      --success-color: #11998e;
+      --warning-color: #f39c12;
+      --error-color: #e74c3c;
+      --text-primary: #2c3e50;
+      --text-secondary: #7f8c8d;
+      --text-light: #ecf0f1;
+      --text-white: #ffffff;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-dark: #2c3e50;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-base: 1rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.5rem;
+      --font-size-2xl: 2rem;
+      --font-size-3xl: 3rem;
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --transition-base: 250ms cubic-bezier(.4,0,.2,1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-primary);
+      box-shadow: var(--shadow-md);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-lg) 0;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
+
+    .logo {
+      font-size: var(--font-size-2xl);
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-decoration: none;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 2px solid transparent;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      transition: all var(--transition-base);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--primary-gradient);
+      transition: left var(--transition-base);
+      z-index: -1;
+    }
+
+    .nav-btn:hover::before,
+    .nav-btn.active::before {
+      left: 0;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      color: var(--text-white);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-top: 80px;
+      min-height: calc(100vh - 80px);
+      padding: var(--space-2xl) 0;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .requests-table {
+      background: var(--bg-primary);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+      overflow: hidden;
+      margin-bottom: var(--space-2xl);
+    }
+
+    .table-header {
+      background: var(--primary-gradient);
+      color: var(--text-white);
+      padding: var(--space-lg);
+      font-weight: 600;
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr 2fr 1fr 1fr 1fr;
+      gap: var(--space-md);
+      align-items: center;
+    }
+
+    .table-row {
+      padding: var(--space-lg);
+      border-bottom: 1px solid var(--bg-secondary);
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr 2fr 1fr 1fr 1fr;
+      gap: var(--space-md);
+      align-items: center;
+      transition: all var(--transition-base);
+    }
+
+    .table-row:hover {
+      background: var(--bg-secondary);
+    }
+
+    .table-row:last-child {
+      border-bottom: none;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .user-email {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .skills-info {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .skills-label {
+      font-size: var(--font-size-xs);
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+
+    .skill-tag {
+      background: var(--bg-secondary);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+    }
+
+    .status-badge {
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .status-pending {
+      background: rgba(243, 156, 18, 0.1);
+      color: var(--warning-color);
+    }
+
+    .status-accepted {
+      background: rgba(17, 153, 142, 0.1);
+      color: var(--success-color);
+    }
+
+    .status-rejected {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--error-color);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: var(--space-xs);
+    }
+
+    .btn {
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: all var(--transition-base);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-delete {
+      background: var(--error-gradient);
+      color: var(--text-white);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-xl);
+    }
+
+    .page-btn {
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-full);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      text-decoration: none;
+      border: 1px solid var(--bg-secondary);
+      transition: all var(--transition-base);
+    }
+
+    .page-btn:hover,
+    .page-btn.active {
+      background: var(--primary-gradient);
+      color: var(--text-white);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      transition: all var(--transition-base);
+    }
+
+    .theme-toggle:hover {
+      background: var(--primary-color);
+      color: var(--text-white);
+      transform: translateY(-1px);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .table-header,
+      .table-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+      }
+      
+      .table-header {
+        display: none;
+      }
+      
+      .table-row {
+        border: 1px solid var(--bg-secondary);
+        border-radius: var(--radius-lg);
+        margin-bottom: var(--space-md);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="/admin" class="logo">Admin Panel</a>
+      <nav class="nav-menu">
+        <button class="theme-toggle" onclick="toggleTheme()">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <a href="/admin" class="nav-btn">Dashboard</a>
+        <a href="/admin/users" class="nav-btn">Users</a>
+        <a href="/admin/requests" class="nav-btn active">Requests</a>
+        <a href="/admin/notifications" class="nav-btn">Notifications</a>
+        <a href="/admin/analytics" class="nav-btn">Analytics</a>
+        <a href="/" class="nav-btn">Back to Site</a>
+        <a href="/logout" class="nav-btn">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <h1 class="page-title">Swap Request Management</h1>
+      
+      <div class="requests-table">
+        <div class="table-header">
+          <div>From User</div>
+          <div>To User</div>
+          <div>Skills Offered</div>
+          <div>Skills Wanted</div>
+          <div>Status</div>
+          <div>Date</div>
+          <div>Actions</div>
+        </div>
+        
+        <% requests.forEach(request => { %>
+          <div class="table-row">
+            <div class="user-info">
+              <div class="user-name"><%= request.fromUserId.name %></div>
+              <div class="user-email"><%= request.fromUserId.email %></div>
+            </div>
+            
+            <div class="user-info">
+              <div class="user-name"><%= request.toUserId.name %></div>
+              <div class="user-email"><%= request.toUserId.email %></div>
+            </div>
+            
+            <div class="skills-info">
+              <div class="skills-label">Offering:</div>
+              <div class="skills-list">
+                <% request.skillsOffered.forEach(skill => { %>
+                  <span class="skill-tag"><%= skill %></span>
+                <% }); %>
+              </div>
+            </div>
+            
+            <div class="skills-info">
+              <div class="skills-label">Wanting:</div>
+              <div class="skills-list">
+                <% request.skillsWanted.forEach(skill => { %>
+                  <span class="skill-tag"><%= skill %></span>
+                <% }); %>
+              </div>
+            </div>
+            
+            <div>
+              <span class="status-badge status-<%= request.status %>">
+                <%= request.status %>
+              </span>
+            </div>
+            
+            <div><%= new Date(request.createdAt).toLocaleDateString() %></div>
+            
+            <div class="action-buttons">
+              <form action="/admin/requests/<%= request._id %>/delete" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this request?')">Delete</button>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <!-- Pagination -->
+      <% if (totalPages > 1) { %>
+        <div class="pagination">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="/admin/requests?page=<%= i %>" 
+               class="page-btn <%= i === currentPage ? 'active' : '' %>">
+              <%= i %>
+            </a>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </main>
+
+  <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html> 

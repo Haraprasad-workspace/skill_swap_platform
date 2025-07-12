@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Profile - Skill Swap Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    });
+
+    // Skills management
+    function addSkill(type) {
+      const container = document.getElementById(`${type}Skills`);
+      const skillInput = document.createElement('div');
+      skillInput.className = 'flex gap-2 mb-2';
+      skillInput.innerHTML = `
+        <select name="${type}Skills[]" class="flex-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Select a skill</option>
+          <option value="JavaScript">JavaScript</option>
+          <option value="Python">Python</option>
+          <option value="React">React</option>
+          <option value="Node.js">Node.js</option>
+          <option value="HTML/CSS">HTML/CSS</option>
+          <option value="Java">Java</option>
+          <option value="C++">C++</option>
+          <option value="PHP">PHP</option>
+          <option value="Ruby">Ruby</option>
+          <option value="Other">Other</option>
+        </select>
+        <button type="button" onclick="removeSkill(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded">Remove</button>
+      `;
+      container.appendChild(skillInput);
+    }
+
+    function removeSkill(button) {
+      button.parentElement.remove();
+    }
+  </script>
+  <style>
+    [data-theme="light"] {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-card: #ffffff;
+      --text-primary: #2c3e50;
+      --text-secondary: #7f8c8d;
+      --border-color: #e9ecef;
+      --accent-color: #667eea;
+    }
+    
+    [data-theme="dark"] {
+      --bg-primary: #1a1a1a;
+      --bg-secondary: #2d2d2d;
+      --bg-card: #333333;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --border-color: #444444;
+      --accent-color: #4facfe;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <h1 class="text-2xl font-bold text-blue-600 dark:text-blue-400">Skill Swap Platform</h1>
+        </div>
+        <div class="flex items-center gap-6">
+          <button onclick="toggleTheme()" class="theme-toggle p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
+            <span class="dark:hidden">🌙</span>
+            <span class="hidden dark:inline">☀️</span>
+          </button>
+          <a href="/profile" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">← Back to Profile</a>
+          <a href="/logout" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white transition">Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 container mx-auto px-4 py-8 max-w-4xl">
+    <div class="card rounded-xl p-8 animate-fade-in">
+      <h1 class="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">Edit Your Profile</h1>
+      
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6 dark:bg-red-900/20 dark:border-red-700 dark:text-red-300">
+          <%= error %>
+        </div>
+      <% } %>
+
+      <form action="/profile/edit" method="POST" enctype="multipart/form-data" class="space-y-8">
+        
+        <!-- Basic Information -->
+        <div class="space-y-6">
+          <h2 class="text-xl font-semibold border-b border-gray-300 dark:border-gray-600 pb-2 text-gray-800 dark:text-white">Basic Information</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="name" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Full Name</label>
+              <input type="text" id="name" name="name" value="<%= user.name || '' %>" 
+                     class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                     required>
+            </div>
+
+            <div>
+              <label for="email" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Email</label>
+              <input type="email" id="email" value="<%= user.email %>" 
+                     class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-800 dark:text-white opacity-70 cursor-not-allowed" 
+                     disabled>
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Email cannot be changed</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="location" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Location</label>
+              <input type="text" id="location" name="location" value="<%= user.location || '' %>" 
+                     placeholder="e.g., New York, NY"
+                     class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+              <label for="availability" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Availability</label>
+              <select id="availability" name="availability" 
+                      class="w-full bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Select availability</option>
+                <option value="Weekends" <%= user.availability === 'Weekends' ? 'selected' : '' %>>Weekends</option>
+                <option value="Weekdays" <%= user.availability === 'Weekdays' ? 'selected' : '' %>>Weekdays</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Photo -->
+        <div class="space-y-6">
+          <h2 class="text-xl font-semibold border-b border-gray-300 dark:border-gray-600 pb-2 text-gray-800 dark:text-white">Profile Photo</h2>
+          
+          <div class="flex items-center gap-6">
+            <div class="flex-shrink-0">
+              <div class="w-24 h-24 rounded-full border-2 border-blue-400 flex items-center justify-center overflow-hidden">
+                <% if (user.profilePhoto) { %>
+                  <img src="<%= user.profilePhoto %>" alt="Profile" class="w-full h-full object-cover">
+                <% } else { %>
+                  <div class="w-full h-full bg-blue-600 flex items-center justify-center text-white font-bold text-2xl">
+                    <%= user.name ? user.name.charAt(0).toUpperCase() : 'U' %>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+            
+            <div class="flex-1">
+              <label for="profilePhoto" class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Upload New Photo</label>
+              <input type="file" id="profilePhoto" name="profilePhoto" accept="image/*"
+                     class="block w-full text-gray-700 dark:text-gray-300 file:bg-blue-600 file:border-none file:px-4 file:py-2 file:rounded file:text-white file:cursor-pointer hover:file:bg-blue-700">
+              <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">JPG, PNG, or GIF up to 5MB</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="space-y-6">
+          <h2 class="text-xl font-semibold border-b border-gray-300 dark:border-gray-600 pb-2 text-gray-800 dark:text-white">Skills & Expertise</h2>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Skills Offered -->
+            <div>
+              <h3 class="text-lg font-medium text-blue-600 dark:text-blue-400 mb-4">Skills I Can Teach</h3>
+              <div id="offeredSkills" class="space-y-2">
+                <% if (user.skillsOffered && user.skillsOffered.length > 0) { %>
+                  <% user.skillsOffered.forEach(skill => { %>
+                    <div class="flex gap-2 mb-2">
+                      <select name="offeredSkills[]" class="flex-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select a skill</option>
+                        <option value="JavaScript" <%= skill === 'JavaScript' ? 'selected' : '' %>>JavaScript</option>
+                        <option value="Python" <%= skill === 'Python' ? 'selected' : '' %>>Python</option>
+                        <option value="React" <%= skill === 'React' ? 'selected' : '' %>>React</option>
+                        <option value="Node.js" <%= skill === 'Node.js' ? 'selected' : '' %>>Node.js</option>
+                        <option value="HTML/CSS" <%= skill === 'HTML/CSS' ? 'selected' : '' %>>HTML/CSS</option>
+                        <option value="Java" <%= skill === 'Java' ? 'selected' : '' %>>Java</option>
+                        <option value="C++" <%= skill === 'C++' ? 'selected' : '' %>>C++</option>
+                        <option value="PHP" <%= skill === 'PHP' ? 'selected' : '' %>>PHP</option>
+                        <option value="Ruby" <%= skill === 'Ruby' ? 'selected' : '' %>>Ruby</option>
+                        <option value="Go" <%= skill === 'Go' ? 'selected' : '' %>>Go</option>
+                        <option value="Swift" <%= skill === 'Swift' ? 'selected' : '' %>>Swift</option>
+                        <option value="Kotlin" <%= skill === 'Kotlin' ? 'selected' : '' %>>Kotlin</option>
+                        <option value="Rust" <%= skill === 'Rust' ? 'selected' : '' %>>Rust</option>
+                        <option value="TypeScript" <%= skill === 'TypeScript' ? 'selected' : '' %>>TypeScript</option>
+                        <option value="Vue.js" <%= skill === 'Vue.js' ? 'selected' : '' %>>Vue.js</option>
+                        <option value="Angular" <%= skill === 'Angular' ? 'selected' : '' %>>Angular</option>
+                        <option value="Django" <%= skill === 'Django' ? 'selected' : '' %>>Django</option>
+                        <option value="Flask" <%= skill === 'Flask' ? 'selected' : '' %>>Flask</option>
+                        <option value="Express.js" <%= skill === 'Express.js' ? 'selected' : '' %>>Express.js</option>
+                        <option value="Laravel" <%= skill === 'Laravel' ? 'selected' : '' %>>Laravel</option>
+                        <option value="Spring Boot" <%= skill === 'Spring Boot' ? 'selected' : '' %>>Spring Boot</option>
+                        <option value="ASP.NET" <%= skill === 'ASP.NET' ? 'selected' : '' %>>ASP.NET</option>
+                        <option value="GraphQL" <%= skill === 'GraphQL' ? 'selected' : '' %>>GraphQL</option>
+                        <option value="REST API" <%= skill === 'REST API' ? 'selected' : '' %>>REST API</option>
+                        <option value="MongoDB" <%= skill === 'MongoDB' ? 'selected' : '' %>>MongoDB</option>
+                        <option value="PostgreSQL" <%= skill === 'PostgreSQL' ? 'selected' : '' %>>PostgreSQL</option>
+                        <option value="MySQL" <%= skill === 'MySQL' ? 'selected' : '' %>>MySQL</option>
+                        <option value="Redis" <%= skill === 'Redis' ? 'selected' : '' %>>Redis</option>
+                        <option value="Docker" <%= skill === 'Docker' ? 'selected' : '' %>>Docker</option>
+                        <option value="Kubernetes" <%= skill === 'Kubernetes' ? 'selected' : '' %>>Kubernetes</option>
+                        <option value="AWS" <%= skill === 'AWS' ? 'selected' : '' %>>AWS</option>
+                        <option value="Azure" <%= skill === 'Azure' ? 'selected' : '' %>>Azure</option>
+                        <option value="Google Cloud" <%= skill === 'Google Cloud' ? 'selected' : '' %>>Google Cloud</option>
+                        <option value="Machine Learning" <%= skill === 'Machine Learning' ? 'selected' : '' %>>Machine Learning</option>
+                        <option value="Data Science" <%= skill === 'Data Science' ? 'selected' : '' %>>Data Science</option>
+                        <option value="Artificial Intelligence" <%= skill === 'Artificial Intelligence' ? 'selected' : '' %>>Artificial Intelligence</option>
+                        <option value="Blockchain" <%= skill === 'Blockchain' ? 'selected' : '' %>>Blockchain</option>
+                        <option value="Cybersecurity" <%= skill === 'Cybersecurity' ? 'selected' : '' %>>Cybersecurity</option>
+                        <option value="DevOps" <%= skill === 'DevOps' ? 'selected' : '' %>>DevOps</option>
+                        <option value="UI/UX Design" <%= skill === 'UI/UX Design' ? 'selected' : '' %>>UI/UX Design</option>
+                        <option value="Graphic Design" <%= skill === 'Graphic Design' ? 'selected' : '' %>>Graphic Design</option>
+                        <option value="Digital Marketing" <%= skill === 'Digital Marketing' ? 'selected' : '' %>>Digital Marketing</option>
+                        <option value="Content Writing" <%= skill === 'Content Writing' ? 'selected' : '' %>>Content Writing</option>
+                        <option value="Video Editing" <%= skill === 'Video Editing' ? 'selected' : '' %>>Video Editing</option>
+                        <option value="Photography" <%= skill === 'Photography' ? 'selected' : '' %>>Photography</option>
+                        <option value="Music Production" <%= skill === 'Music Production' ? 'selected' : '' %>>Music Production</option>
+                        <option value="Cooking" <%= skill === 'Cooking' ? 'selected' : '' %>>Cooking</option>
+                        <option value="Languages" <%= skill === 'Languages' ? 'selected' : '' %>>Languages</option>
+                        <option value="Public Speaking" <%= skill === 'Public Speaking' ? 'selected' : '' %>>Public Speaking</option>
+                        <option value="Project Management" <%= skill === 'Project Management' ? 'selected' : '' %>>Project Management</option>
+                        <option value="Leadership" <%= skill === 'Leadership' ? 'selected' : '' %>>Leadership</option>
+                        <option value="Sales" <%= skill === 'Sales' ? 'selected' : '' %>>Sales</option>
+                        <option value="Customer Service" <%= skill === 'Customer Service' ? 'selected' : '' %>>Customer Service</option>
+                        <option value="Teaching" <%= skill === 'Teaching' ? 'selected' : '' %>>Teaching</option>
+                        <option value="Coaching" <%= skill === 'Coaching' ? 'selected' : '' %>>Coaching</option>
+                        <option value="Fitness Training" <%= skill === 'Fitness Training' ? 'selected' : '' %>>Fitness Training</option>
+                        <option value="Yoga" <%= skill === 'Yoga' ? 'selected' : '' %>>Yoga</option>
+                        <option value="Meditation" <%= skill === 'Meditation' ? 'selected' : '' %>>Meditation</option>
+                        <option value="Gardening" <%= skill === 'Gardening' ? 'selected' : '' %>>Gardening</option>
+                        <option value="DIY Crafts" <%= skill === 'DIY Crafts' ? 'selected' : '' %>>DIY Crafts</option>
+                        <option value="Woodworking" <%= skill === 'Woodworking' ? 'selected' : '' %>>Woodworking</option>
+                        <option value="Electrical Work" <%= skill === 'Electrical Work' ? 'selected' : '' %>>Electrical Work</option>
+                        <option value="Plumbing" <%= skill === 'Plumbing' ? 'selected' : '' %>>Plumbing</option>
+                        <option value="Car Maintenance" <%= skill === 'Car Maintenance' ? 'selected' : '' %>>Car Maintenance</option>
+                        <option value="Other" <%= skill === 'Other' ? 'selected' : '' %>>Other</option>
+                      </select>
+                      <button type="button" onclick="removeSkill(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded">Remove</button>
+                    </div>
+                  <% }); %>
+                <% } %>
+              </div>
+              <button type="button" onclick="addSkill('offered')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2">Add Skill</button>
+            </div>
+
+            <!-- Skills Wanted -->
+            <div>
+              <h3 class="text-lg font-medium text-blue-600 dark:text-blue-400 mb-4">Skills I Want to Learn</h3>
+              <div id="wantedSkills" class="space-y-2">
+                <% if (user.skillsWanted && user.skillsWanted.length > 0) { %>
+                  <% user.skillsWanted.forEach(skill => { %>
+                    <div class="flex gap-2 mb-2">
+                      <select name="wantedSkills[]" class="flex-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select a skill</option>
+                        <option value="JavaScript" <%= skill === 'JavaScript' ? 'selected' : '' %>>JavaScript</option>
+                        <option value="Python" <%= skill === 'Python' ? 'selected' : '' %>>Python</option>
+                        <option value="React" <%= skill === 'React' ? 'selected' : '' %>>React</option>
+                        <option value="Node.js" <%= skill === 'Node.js' ? 'selected' : '' %>>Node.js</option>
+                        <option value="HTML/CSS" <%= skill === 'HTML/CSS' ? 'selected' : '' %>>HTML/CSS</option>
+                        <option value="Java" <%= skill === 'Java' ? 'selected' : '' %>>Java</option>
+                        <option value="C++" <%= skill === 'C++' ? 'selected' : '' %>>C++</option>
+                        <option value="PHP" <%= skill === 'PHP' ? 'selected' : '' %>>PHP</option>
+                        <option value="Ruby" <%= skill === 'Ruby' ? 'selected' : '' %>>Ruby</option>
+                        <option value="Other" <%= skill === 'Other' ? 'selected' : '' %>>Other</option>
+                      </select>
+                      <button type="button" onclick="removeSkill(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded">Remove</button>
+                    </div>
+                  <% }); %>
+                <% } %>
+              </div>
+              <button type="button" onclick="addSkill('wanted')" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mt-2">Add Skill</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Settings -->
+        <div class="space-y-6">
+          <h2 class="text-xl font-semibold border-b border-gray-300 dark:border-gray-600 pb-2 text-gray-800 dark:text-white">Privacy Settings</h2>
+          
+          <div class="flex items-center">
+            <input type="checkbox" id="isPrivate" name="isPrivate" 
+                   <%= user.isPrivate ? "checked" : "" %>
+                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="isPrivate" class="ml-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+              Make my profile private (only I can see it)
+            </label>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Private profiles won't appear in search results</p>
+        </div>
+
+        <!-- Submit Buttons -->
+        <div class="flex gap-4 pt-6">
+          <button type="submit" 
+                  class="flex-1 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold text-white transition">
+            Save Changes
+          </button>
+          <a href="/profile" 
+             class="flex-1 bg-gray-500 hover:bg-gray-600 px-6 py-3 rounded-lg font-semibold text-white transition text-center">
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
+    <div class="container mx-auto px-4 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Skill Swap Platform</h3>
+          <p class="text-gray-600 dark:text-gray-300 text-sm">Connect, learn, and grow together through skill sharing.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4 text-gray-800 dark:text-white">Quick Links</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Home</a></li>
+            <li><a href="/login" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Login</a></li>
+            <li><a href="/register" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Register</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4 text-gray-800 dark:text-white">Features</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="/profile" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">My Profile</a></li>
+            <li><a href="/notifications" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Notifications</a></li>
+            <li><a href="/request" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Skill Requests</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4 text-gray-800 dark:text-white">Contact</h4>
+          <ul class="space-y-2 text-sm">
+            <li class="text-gray-600 dark:text-gray-300">Email: support@skillswapplatform.com</li>
+            <li class="text-gray-600 dark:text-gray-300">Phone: +1 (555) 123-4567</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center">
+        <p class="text-gray-600 dark:text-gray-300 text-sm">&copy; 2024 Skill Swap Platform. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

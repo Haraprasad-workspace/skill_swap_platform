@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Skill Swap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: #fff;
+    }
+
+    header {
+      background-color: #1c1c1c;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 3px solid #f39c12;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    header h1 {
+      margin: 0;
+      color: #f39c12;
+      font-size: 2rem;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 12px;
+      gap: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    nav a {
+      color: #f39c12;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    section {
+      margin-bottom: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+    }
+
+    section h2 {
+      color: #f39c12;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: #f39c12;
+    }
+
+    td {
+      color: #f0f0f0;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin: 4px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .btn-ban { background-color: #e74c3c; color: white; }
+    .btn-ban:hover { background-color: #c0392b; }
+
+    .btn-approve { background-color: #27ae60; color: white; }
+    .btn-approve:hover { background-color: #1e8449; }
+
+    .btn-delete { background-color: #d35400; color: white; }
+    .btn-delete:hover { background-color: #a04000; }
+
+    .btn-download { background-color: #2980b9; color: white; }
+    .btn-download:hover { background-color: #1c6ea4; }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+      resize: vertical;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Admin Dashboard - Skill Swap Platform</h1>
+  </header>
+
+  <nav>
+    <a href="#pending-swaps">Pending Swaps</a>
+    <a href="#spam-skills">Review Skills</a>
+    <a href="#banned-users">Banned Users</a>
+    <a href="#platform-alerts">Send Alerts</a>
+    <a href="#reports">Download Reports</a>
+  </nav>
+
+  <div class="container">
+    <section id="pending-swaps">
+      <h2>Monitor Swap Requests</h2>
+      <table>
+        <tr>
+          <th>User</th>
+          <th>Skill Offered</th>
+          <th>Skill Wanted</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <td>Riya</td>
+          <td>Photoshop</td>
+          <td>Excel</td>
+          <td>Pending</td>
+          <td><button class="btn-approve">Approve</button><button class="btn-delete">Delete</button></td>
+        </tr>
+      </table>
+    </section>
+
+    <section id="spam-skills">
+      <h2>Review Skill Descriptions</h2>
+      <table>
+        <tr>
+          <th>User</th>
+          <th>Skill Description</th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <td>John</td>
+          <td>"I can do everything perfectly!"</td>
+          <td><button class="btn-delete">Reject</button></td>
+        </tr>
+      </table>
+    </section>
+
+    <section id="banned-users">
+      <h2>Ban Users</h2>
+      <table>
+        <tr>
+          <th>User</th>
+          <th>Reason</th>
+          <th>Actions</th>
+        </tr>
+        <tr>
+          <td>Sneha</td>
+          <td>Spammed with requests</td>
+          <td><button class="btn-ban">Ban</button></td>
+        </tr>
+      </table>
+    </section>
+
+    <section id="platform-alerts">
+      <h2>Send Platform-wide Alerts</h2>
+      <textarea placeholder="Write your alert here (e.g. 'New features coming this week!')..."></textarea>
+      <br /><br />
+      <button class="btn-download">Send Alert</button>
+    </section>
+
+    <section id="reports">
+      <h2>Download Reports</h2>
+      <p>You can download user activity logs, feedback logs, and swap statistics below.</p>
+      <button class="btn-download">Download Activity Logs</button>
+      <button class="btn-download">Download Feedback</button>
+      <button class="btn-download">Download Swap Stats</button>
+    </section>
+  </div>
+</body>
+</html>

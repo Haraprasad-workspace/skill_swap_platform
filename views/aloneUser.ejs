@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile - Skill Swap Platform</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #f1f1f1;
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 15px 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: #f1c40f;
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: #f1c40f;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .profile-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .profile-header img {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid #f1c40f;
+      object-fit: cover;
+      box-shadow: 0 0 10px #000;
+    }
+
+    .details {
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .details h2 {
+      font-size: 1.8rem;
+      color: #ffffff;
+    }
+
+    .rating {
+      color: gold;
+      font-size: 1.3rem;
+      margin-top: 5px;
+    }
+
+    .section {
+      margin-top: 40px;
+    }
+
+    .section h3 {
+      font-size: 1.4rem;
+      color: #f1c40f;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    ul li {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px 16px;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 500;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .feedback {
+      background-color: rgba(255,255,255,0.07);
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-top: 12px;
+      font-style: italic;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    .btn-swap {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 24px;
+      background-color: #27ae60;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+    }
+
+    .btn-swap:hover {
+      background-color: #219150;
+    }
+
+    @media screen and (max-width: 600px) {
+      .profile-header {
+        flex-direction: column;
+      }
+
+      header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Skill Swap Platform</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#">Profile Photo</a>
+      <a href="#">Swap Request</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="profile-header">
+      <img src="https://via.placeholder.com/140" alt="Profile Photo" />
+      <div class="details">
+        <h2>Marc Demo</h2>
+        <div class="rating">
+          ⭐⭐⭐⭐☆ (4.0)
+        </div>
+        <div class="feedback">
+          "Very knowledgeable and easy to work with!"
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Skills Offered</h3>
+      <ul>
+        <li>Web Development</li>
+        <li>Photoshop</li>
+        <li>Video Editing</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Skills Wanted</h3>
+      <ul>
+        <li>Excel</li>
+        <li>Python Programming</li>
+        <li>Presentation Design</li>
+      </ul>
+    </div>
+
+    <button class="btn-swap">Request Skill Swap</button>
+  </div>
+</body>
+</html>

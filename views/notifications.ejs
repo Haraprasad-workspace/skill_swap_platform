@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notifications - Skill Swap Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      --warning-gradient: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+      --error-gradient: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      --primary-color: #667eea;
+      --accent-color: #4facfe;
+      --success-color: #11998e;
+      --warning-color: #f39c12;
+      --error-color: #e74c3c;
+      --text-primary: #2c3e50;
+      --text-secondary: #7f8c8d;
+      --text-light: #ecf0f1;
+      --text-white: #ffffff;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-dark: #2c3e50;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-base: 1rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.5rem;
+      --font-size-2xl: 2rem;
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --transition-base: 250ms cubic-bezier(.4,0,.2,1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-lg);
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-primary);
+      box-shadow: var(--shadow-md);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-lg) 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-left: var(--space-lg);
+      padding-right: var(--space-lg);
+    }
+
+    .logo {
+      font-size: var(--font-size-2xl);
+      font-weight: 800;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-decoration: none;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: var(--space-sm);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 2px solid transparent;
+      padding: var(--space-sm) var(--space-lg);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      font-weight: 500;
+      transition: all var(--transition-base);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--primary-gradient);
+      transition: left var(--transition-base);
+      z-index: -1;
+    }
+
+    .nav-btn:hover::before,
+    .nav-btn.active::before {
+      left: 0;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      color: var(--text-white);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-top: 80px;
+      min-height: calc(100vh - 80px);
+      padding: var(--space-2xl) 0;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: var(--space-2xl);
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .notifications-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2xl);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .notification-section {
+      background: var(--bg-primary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .section-title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      margin-bottom: var(--space-xl);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .notification-item {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-md);
+      border: 1px solid var(--bg-tertiary);
+      transition: all var(--transition-base);
+    }
+
+    .notification-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .notification-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: var(--font-size-lg);
+    }
+
+    .request-date {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .skills-info {
+      margin-bottom: var(--space-md);
+    }
+
+    .skills-label {
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+      font-size: var(--font-size-sm);
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+    }
+
+    .skill-tag {
+      background: var(--bg-primary);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 500;
+      border: 1px solid var(--bg-tertiary);
+    }
+
+    .skill-tag.offered {
+      background: rgba(17, 153, 142, 0.1);
+      border-color: var(--success-color);
+      color: var(--success-color);
+    }
+
+    .skill-tag.wanted {
+      background: rgba(231, 76, 60, 0.1);
+      border-color: var(--error-color);
+      color: var(--error-color);
+    }
+
+    .notification-actions {
+      display: flex;
+      gap: var(--space-sm);
+    }
+
+    .btn {
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: all var(--transition-base);
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-accept {
+      background: var(--success-gradient);
+      color: var(--text-white);
+    }
+
+    .btn-accept:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-reject {
+      background: var(--error-gradient);
+      color: var(--text-white);
+    }
+
+    .btn-reject:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--bg-tertiary);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .status-badge {
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-pending {
+      background: rgba(243, 156, 18, 0.1);
+      color: var(--warning-color);
+    }
+
+    .status-accepted {
+      background: rgba(17, 153, 142, 0.1);
+      color: var(--success-color);
+    }
+
+    .status-rejected {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--error-color);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-3xl);
+      color: var(--text-secondary);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .notifications-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-xl);
+      }
+      
+      .notification-actions {
+        flex-direction: column;
+      }
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      background: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      transition: all var(--transition-base);
+    }
+
+    .theme-toggle:hover {
+      background: var(--primary-color);
+      color: var(--text-white);
+      transform: translateY(-1px);
+    }
+
+    /* Rating Form Styles */
+    .rating-form {
+      margin-top: var(--space-lg);
+      padding: var(--space-lg);
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .rating-input, .feedback-input {
+      margin-bottom: var(--space-lg);
+    }
+
+    .rating-input label, .feedback-input label {
+      display: block;
+      margin-bottom: var(--space-sm);
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .rating-input select {
+      width: 100%;
+      padding: var(--space-md);
+      border: 2px solid rgba(102, 126, 234, 0.2);
+      border-radius: var(--radius-lg);
+      font-size: var(--font-size-sm);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: all var(--transition-base);
+    }
+
+    .rating-input select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .feedback-input textarea {
+      width: 100%;
+      padding: var(--space-md);
+      border: 2px solid rgba(102, 126, 234, 0.2);
+      border-radius: var(--radius-lg);
+      font-size: var(--font-size-sm);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      resize: vertical;
+      min-height: 80px;
+      font-family: var(--font-family);
+      transition: all var(--transition-base);
+    }
+
+    .feedback-input textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .rating-actions {
+      display: flex;
+      gap: var(--space-md);
+      justify-content: flex-end;
+    }
+
+    .btn-rate {
+      background: var(--warning-gradient);
+      color: var(--text-white);
+    }
+
+    .btn-submit {
+      background: var(--success-gradient);
+      color: var(--text-white);
+    }
+
+    .btn-cancel {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 2px solid rgba(102, 126, 234, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="/" class="logo">SkillSwap</a>
+      <nav class="nav-menu">
+        <button class="theme-toggle" onclick="toggleTheme()">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <a href="/" class="nav-btn">Home</a>
+        <a href="/profile" class="nav-btn">My Profile</a>
+        <a href="/logout" class="nav-btn">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <h1 class="page-title">Notifications</h1>
+      
+      <div class="notifications-grid">
+        <!-- Received Requests -->
+        <div class="notification-section">
+          <h2 class="section-title">
+            <span>📥</span>
+            Received Requests
+          </h2>
+          
+          <% if (receivedRequests && receivedRequests.length > 0) { %>
+            <% receivedRequests.forEach(request => { %>
+              <div class="notification-item">
+                <div class="notification-header">
+                  <div>
+                    <div class="user-name"><%= request.fromUserId.name %></div>
+                    <div class="request-date"><%= new Date(request.createdAt).toLocaleDateString() %></div>
+                  </div>
+                  <span class="status-badge status-<%= request.status %>"><%= request.status %></span>
+                </div>
+                
+                <div class="skills-info">
+                  <div class="skills-label">Skills Offered:</div>
+                  <div class="skills-list">
+                    <% request.skillsOffered.forEach(skill => { %>
+                      <span class="skill-tag offered"><%= skill %></span>
+                    <% }); %>
+                  </div>
+                </div>
+                
+                <div class="skills-info">
+                  <div class="skills-label">Skills Wanted:</div>
+                  <div class="skills-list">
+                    <% request.skillsWanted.forEach(skill => { %>
+                      <span class="skill-tag wanted"><%= skill %></span>
+                    <% }); %>
+                  </div>
+                </div>
+                
+                <% if (request.status === 'pending') { %>
+                  <div class="notification-actions">
+                    <form action="/notifications/accept/<%= request._id %>" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-accept">Accept</button>
+                    </form>
+                    <form action="/notifications/reject/<%= request._id %>" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-reject">Reject</button>
+                    </form>
+                  </div>
+                <% } else if (request.status === 'accepted') { %>
+                  <div class="notification-actions">
+                    <button type="button" class="btn btn-rate" onclick="showRatingForm('<%= request._id %>')">Rate Experience</button>
+                  </div>
+                  <!-- Rating Form (Hidden by default) -->
+                  <div id="rating-form-<%= request._id %>" class="rating-form" style="display: none;">
+                    <form action="/notifications/rate/<%= request._id %>" method="POST">
+                      <div class="rating-input">
+                        <label>Rating:</label>
+                        <select name="rating" required>
+                          <option value="">Select rating</option>
+                          <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                          <option value="4">⭐⭐⭐⭐ Very Good</option>
+                          <option value="3">⭐⭐⭐ Good</option>
+                          <option value="2">⭐⭐ Fair</option>
+                          <option value="1">⭐ Poor</option>
+                        </select>
+                      </div>
+                      <div class="feedback-input">
+                        <label>Feedback (optional):</label>
+                        <textarea name="feedback" placeholder="Share your experience..."></textarea>
+                      </div>
+                      <div class="rating-actions">
+                        <button type="submit" class="btn btn-submit">Submit Rating</button>
+                        <button type="button" class="btn btn-cancel" onclick="hideRatingForm('<%= request._id %>')">Cancel</button>
+                      </div>
+                    </form>
+                  </div>
+                <% } %>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <div class="empty-state">
+              <div class="empty-state-icon">📭</div>
+              <h3>No received requests</h3>
+              <p>You haven't received any skill swap requests yet.</p>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Sent Requests -->
+        <div class="notification-section">
+          <h2 class="section-title">
+            <span>📤</span>
+            Sent Requests
+          </h2>
+          
+          <% if (sentRequests && sentRequests.length > 0) { %>
+            <% sentRequests.forEach(request => { %>
+              <div class="notification-item">
+                <div class="notification-header">
+                  <div>
+                    <div class="user-name"><%= request.toUserId.name %></div>
+                    <div class="request-date"><%= new Date(request.createdAt).toLocaleDateString() %></div>
+                  </div>
+                  <span class="status-badge status-<%= request.status %>"><%= request.status %></span>
+                </div>
+                
+                <div class="skills-info">
+                  <div class="skills-label">Skills Offered:</div>
+                  <div class="skills-list">
+                    <% request.skillsOffered.forEach(skill => { %>
+                      <span class="skill-tag offered"><%= skill %></span>
+                    <% }); %>
+                  </div>
+                </div>
+                
+                <div class="skills-info">
+                  <div class="skills-label">Skills Wanted:</div>
+                  <div class="skills-list">
+                    <% request.skillsWanted.forEach(skill => { %>
+                      <span class="skill-tag wanted"><%= skill %></span>
+                    <% }); %>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <div class="empty-state">
+              <div class="empty-state-icon">📭</div>
+              <h3>No sent requests</h3>
+              <p>You haven't sent any skill swap requests yet.</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Theme toggle functionality
+    function toggleTheme() {
+      const html = document.documentElement;
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      
+      const themeIcon = document.getElementById('theme-icon');
+      themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Rating form functions
+    function showRatingForm(requestId) {
+      const form = document.getElementById(`rating-form-${requestId}`);
+      if (form) {
+        form.style.display = 'block';
+        form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function hideRatingForm(requestId) {
+      const form = document.getElementById(`rating-form-${requestId}`);
+      if (form) {
+        form.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html> 
